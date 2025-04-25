@@ -5,8 +5,6 @@
 
 A web tool for generating and parsing Telegram MTProto proxy links with support for all protocols (Normal, Secure, Fake-TLS).
 
-ابزاری تحت وب برای تولید و تجزیه لینک‌های پروکسی MTProto تلگرام با پشتیبانی از تمام پروتکل‌ها (عادی، امن، Fake-TLS).
-
 ## Features ✨
 
 - **Generate proxy links** in all supported formats:
@@ -16,8 +14,6 @@ A web tool for generating and parsing Telegram MTProto proxy links with support 
 - **Parse existing proxy links** to extract configuration
 - **Copy parsed configurations** to generator
 - **Random secret generator**
-- **Mobile-friendly** responsive design
-- **Clean modern UI** with Tailwind CSS
 
 ## Usage 🚀
 
@@ -37,27 +33,4 @@ A web tool for generating and parsing Telegram MTProto proxy links with support 
 
 ## Live Demo 🌐
 
-[View live demo](https://your-demo-url-here.com)
-
-## Installation 💻
-
-To run locally:
-
-```bash
-git clone https://github.com/your-username/mtproto-proxy-generator.git
-cd mtproto-proxy-generator
-# Open index.html in your browser
-```
-
-## Screenshots 📸
-
-![Generator Screenshot](screenshots/generator.png)
-![Parser Screenshot](screenshots/parser.png)
-
-## Contributing 🤝
-
-Contributions are welcome! Please open an issue or submit a pull request.
-
-## License 📜
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+[View live demo](https://dev-ir.github.io/Telegram-MTProto-Proxy/)
