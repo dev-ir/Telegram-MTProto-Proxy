@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,22 +33,22 @@
     }
 
     function bytesToBase64(data) {
-      var str = String.fromCharCode.apply(null,data);
-      return btoa(str).replace(/.{76}(?=.)/g,'$&\n');
+      var str = String.fromCharCode.apply(null, data);
+      return btoa(str).replace(/.{76}(?=.)/g, '$&\n');
     }
-    
+
     function base64ToBytes(str) {
       return atob(str);
     }
-    
+
     function bytesToUrlSafeBase64(data) {
       return bytesToBase64(data).replaceAll("+", "-").replaceAll("/", "_");
     }
-    
+
     function urlSafeBase64ToBytes(str) {
       return base64ToBytes(str.replaceAll("-", "+").replaceAll("_", "/"))
     }
-    
+
     function parseQuery(queryString) {
       var query = {};
       var pairs = queryString.split('&');
@@ -57,22 +58,22 @@
       }
       return query;
     }
-    
+
     function getRandomInt(max) {
       return Math.floor(Math.random() * Math.floor(max));
     }
-    
+
     function setUrl(id, url) {
       var el = $$(id)[0];
       el.href = url;
       el.innerText = url;
     }
-    
+
     function show(id, val) {
       var el = $$(id)[0];
       el.innerText = val;
     }
-    
+
     function parse(url) {
       var p = url.split("://");
       var proto = p[0];
@@ -111,7 +112,7 @@
       } else if (s.startsWith("7")) {
         protocol = "Fake-TLS";
         var bin_secret;
-        if(/^[0-9a-zA-Z_=-]+$/.test(s)) {
+        if (/^[0-9a-zA-Z_=-]+$/.test(s)) {
           bin_secret = urlSafeBase64ToBytes(s)
           protocol += ", URL-safe base64 secret"
         } else if (/^[0-9a-zA-Z\+\/=]+$/.test(s)) {
@@ -135,9 +136,9 @@
         domain: tls_domain
       }
     }
-    
-    document.addEventListener("DOMContentLoaded", function() {
-      $$("#generate")[0].onclick = function() {
+
+    document.addEventListener("DOMContentLoaded", function () {
+      $$("#generate")[0].onclick = function () {
         var form = $$("#generator-form")[0];
         var server = form.server.value;
         var port = form.port.value;
@@ -147,26 +148,26 @@
 
         var secret_bytes = hexToBytes(secret);
         var dd_secret = "dd" + secret
-        var domain_bytes = Array.from(tls_domain).map( (c) => c.charCodeAt(0) );
+        var domain_bytes = Array.from(tls_domain).map((c) => c.charCodeAt(0));
         var tls_bytes = hexToBytes("ee" + secret).concat(domain_bytes);
         var tg_prefix = url_type + "proxy?server=" + server + "&port=" + port + "&secret=";
-        
+
         setUrl("#url-normal", tg_prefix + secret);
         setUrl("#url-dd", tg_prefix + dd_secret);
         setUrl("#url-tls-hex", tg_prefix + encodeURIComponent(bytesToHex(tls_bytes)));
         setUrl("#url-tls-b64", tg_prefix + bytesToBase64(tls_bytes));
         setUrl("#url-tls-safeb64", tg_prefix + bytesToUrlSafeBase64(tls_bytes));
       }
-      
-      $$("#rand-secret")[0].onclick = function() {
+
+      $$("#rand-secret")[0].onclick = function () {
         var rand_hex = [];
         for (var i = 0; i < 16; i++) {
           rand_hex.push(getRandomInt(256));
         }
         $$("#secret")[0].value = bytesToHex(rand_hex);
       }
-      
-      $$("#parse")[0].onclick = function() {
+
+      $$("#parse")[0].onclick = function () {
         var form = $$("#parser-form")[0];
         var link = form["parse-link"].value;
         var parsed = parse(link);
@@ -176,8 +177,8 @@
         show("#parse-hex-secret", parsed.secret);
         show("#parse-domain", parsed.domain);
       }
-      
-      $$("#parse-and-generate")[0].onclick = function() {
+
+      $$("#parse-and-generate")[0].onclick = function () {
         var form = $$("#parser-form")[0];
         var link = form["parse-link"].value;
         var parsed = parse(link);
@@ -196,76 +197,121 @@
     })
   </script>
 </head>
+
 <body class="bg-gray-50 min-h-screen">
   <div class="container mx-auto px-4 py-8 max-w-4xl">
     <header class="mb-8">
       <h1 class="text-3xl font-bold text-gray-800 mb-2">Telegram MTProto Proxy Link Generator</h1>
     </header>
-
-    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+    <div class="bg-white rounded-lg shadow-md p-6 mb-3">
       <form id="generator-form" name="generator-form" class="space-y-4">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label for="server" class="block text-sm font-medium text-gray-700 mb-1">Server</label>
-            <input id="server" name="server" placeholder="1.2.3.4" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            <input id="server" name="server" placeholder="1.2.3.4"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
           </div>
           <div>
             <label for="port" class="block text-sm font-medium text-gray-700 mb-1">Port</label>
-            <input id="port" name="port" placeholder="443" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            <input id="port" name="port" placeholder="443"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
           </div>
           <div>
             <label for="secret" class="block text-sm font-medium text-gray-700 mb-1">Secret</label>
             <div class="flex">
-              <input id="secret" name="secret" placeholder="d0d6e111bada5511fcce9584deadbeef" class="flex-1 px-3 py-2 border border-gray-300 rounded-l-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-              <button type="button" id="rand-secret" class="px-3 py-2 bg-gray-200 text-gray-700 rounded-r-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Rand</button>
+              <input id="secret" name="secret" placeholder="d0d6e111bada5511fcce9584deadbeef"
+                class="flex-1 px-3 py-2 border border-gray-300 rounded-l-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+              <button type="button" id="rand-secret"
+                class="px-3 py-2 bg-gray-200 text-gray-700 rounded-r-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Rand</button>
             </div>
           </div>
           <div>
             <label for="domain" class="block text-sm font-medium text-gray-700 mb-1">Fake-TLS Domain</label>
-            <input id="domain" name="domain" placeholder="google.com" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            <input id="domain" name="domain" placeholder="google.com"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
           </div>
         </div>
-        
         <div class="flex items-center space-x-4">
           <div class="flex items-center space-x-2">
-            <input type="radio" id="tg" name="url_type" value="tg://" checked class="h-4 w-4 text-blue-600 focus:ring-blue-500">
+            <input type="radio" id="tg" name="url_type" value="tg://" checked
+              class="h-4 w-4 text-blue-600 focus:ring-blue-500">
             <label for="tg" class="text-sm font-medium text-gray-700">tg://</label>
           </div>
           <div class="flex items-center space-x-2">
-            <input type="radio" id="tme" name="url_type" value="https://t.me/" class="h-4 w-4 text-blue-600 focus:ring-blue-500">
+            <input type="radio" id="tme" name="url_type" value="https://t.me/"
+              class="h-4 w-4 text-blue-600 focus:ring-blue-500">
             <label for="tme" class="text-sm font-medium text-gray-700">https://t.me</label>
           </div>
         </div>
-        
-        <button type="button" id="generate" class="w-full md:w-auto px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Generate</button>
+        <button type="button" id="generate"
+          class="w-full md:w-auto px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Generate</button>
       </form>
     </div>
-
-    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+    <div class="bg-white rounded-lg shadow-md p-6 mb-3">
       <h2 class="text-xl font-semibold text-gray-800 mb-4">Links</h2>
       <div class="space-y-3">
         <div>
           <span class="font-medium text-gray-700">Normal:</span>
-          <a id="url-normal" href="#" class="block mt-1 px-3 py-2 bg-gray-100 rounded-md text-blue-600 hover:text-blue-800 break-all"></a>
+          <a id="url-normal" href="#"
+            class="block mt-1 px-3 py-2 bg-gray-100 rounded-md text-blue-600 hover:text-blue-800 break-all"></a>
         </div>
         <div>
           <span class="font-medium text-gray-700">Secure:</span>
-          <a id="url-dd" href="#" class="block mt-1 px-3 py-2 bg-gray-100 rounded-md text-blue-600 hover:text-blue-800 break-all"></a>
+          <a id="url-dd" href="#"
+            class="block mt-1 px-3 py-2 bg-gray-100 rounded-md text-blue-600 hover:text-blue-800 break-all"></a>
         </div>
         <div>
           <span class="font-medium text-gray-700">Fake-TLS hex:</span>
-          <a id="url-tls-hex" href="#" class="block mt-1 px-3 py-2 bg-gray-100 rounded-md text-blue-600 hover:text-blue-800 break-all"></a>
+          <a id="url-tls-hex" href="#"
+            class="block mt-1 px-3 py-2 bg-gray-100 rounded-md text-blue-600 hover:text-blue-800 break-all"></a>
         </div>
         <div>
           <span class="font-medium text-gray-700">Fake-TLS URL-safe base64:</span>
-          <a id="url-tls-safeb64" href="#" class="block mt-1 px-3 py-2 bg-gray-100 rounded-md text-blue-600 hover:text-blue-800 break-all"></a>
+          <a id="url-tls-safeb64" href="#"
+            class="block mt-1 px-3 py-2 bg-gray-100 rounded-md text-blue-600 hover:text-blue-800 break-all"></a>
         </div>
         <div>
           <span class="font-medium text-gray-700">Fake-TLS base64:</span>
-          <a id="url-tls-b64" href="#" class="block mt-1 px-3 py-2 bg-gray-100 rounded-md text-blue-600 hover:text-blue-800 break-all"></a>
+          <a id="url-tls-b64" href="#"
+            class="block mt-1 px-3 py-2 bg-gray-100 rounded-md text-blue-600 hover:text-blue-800 break-all"></a>
         </div>
       </div>
     </div>
+    <div class="bg-white rounded-lg shadow-md p-6 mb-3">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">How to install - one-line interactive installer</h2>
+      <div class="space-y-3">
+        <div>
+          <span class="font-medium text-gray-700">This command will run interactive script that will install and
+            configure proxy for your Ubuntu / Debian / CentOS server. It will ask if you want to change default
+            port/secret/ad-tag/protocols:</span>
+          <code id="url-normal" href="#"
+            class="block mt-1 px-3 py-2 bg-gray-100 rounded-md text-blue-600 hover:text-blue-800 break-all">
+            curl -L -o mtp_install.sh https://git.io/fj5ru && bash mtp_install.sh
+          </code>
+        </div>
+        <div>
+          <span class="font-medium text-gray-700">You can also just provide port/secret/ad-tag/protocols/tls-domain as
+            command line arguments:</span>
+          <code id="url-dd" href="#"
+            class="block mt-1 px-3 py-2 bg-gray-100 rounded-md text-blue-600 hover:text-blue-800 break-all">
+            bash curl -L -o mtp_install.sh https://git.io/fj5ru && bash mtp_install.sh -p 443 -s d0d6e111bada5511fcce9584deadbeef -t dcbe8f1493fa4cd9ab300891c0b5b326 -a dd -a tls -d s3.amazonaws.com
+          </code>
+        </div>
+      </div>
+    </div>
+    <footer class="bg-white ">
+      <div class="mx-auto w-full max-w-screen-xl">
+        <div class="px-4 py-3 bg-gray-100 bg-white rounded-lg shadow-md md:flex md:items-center md:justify-between">
+          <span class="text-sm font-semibold text-gray-800">© 2025 <a
+              href="https://github.com/dev-ir/Telegram-MTProto-Proxy">View project on Github </a>
+          </span>
+          <span class="text-sm font-semibold text-gray-800"><a
+              href="https://t.me/dvhost_cloud">DVHOST.IR</a>
+          </span>
+        </div>
+      </div>
+    </footer>
   </div>
 </body>
+
 </html>
