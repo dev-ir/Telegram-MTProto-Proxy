@@ -1,9 +1,7 @@
 
 # Telegram MTProto Proxy Link Generator & Parser
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-A web tool for generating and parsing Telegram MTProto proxy links with support for all protocols (Normal, Secure, Fake-TLS).
+A web tool for generating and parsing Telegram MTProto proxy links with support for all protocols.
 
 ## Features ✨
 
