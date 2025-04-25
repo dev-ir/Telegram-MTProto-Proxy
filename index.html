@@ -266,47 +266,6 @@
         </div>
       </div>
     </div>
-
-    <div class="bg-white rounded-lg shadow-md p-6">
-      <h1 class="text-2xl font-bold text-gray-800 mb-2">Telegram MTProto Proxy Link Parser</h1>
-      <p class="text-gray-600 mb-4">Supports both <code class="bg-gray-100 px-1 py-0.5 rounded">tg://proxy</code> and <code class="bg-gray-100 px-1 py-0.5 rounded">https://t.me/proxy</code> links, all protocols and encodings (normal / <code class="bg-gray-100 px-1 py-0.5 rounded">dd</code> / <code class="bg-gray-100 px-1 py-0.5 rounded">ee</code> / <code class="bg-gray-100 px-1 py-0.5 rounded">base64</code>).</p>
-      
-      <form id="parser-form" name="parser-form" class="space-y-4 mb-6">
-        <div>
-          <label for="parse-link" class="block text-sm font-medium text-gray-700 mb-1">Proxy link</label>
-          <input id="parse-link" name="parse-link" placeholder="https://t.me/proxy?server=google.com&amp;port=443&amp;secret=0000000000000000000000000000000" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-        </div>
-        <div class="flex space-x-3">
-          <button type="button" id="parse" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Parse</button>
-          <button type="button" id="parse-and-generate" class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Parse and copy to generator</button>
-        </div>
-      </form>
-      
-      <div id="parse-info" class="bg-gray-50 rounded-lg p-4">
-        <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="space-y-1">
-            <dt class="text-sm font-medium text-gray-500">Protocol</dt>
-            <dd id="parse-protocol" class="text-gray-900 font-mono"></dd>
-          </div>
-          <div class="space-y-1">
-            <dt class="text-sm font-medium text-gray-500">Server</dt>
-            <dd id="parse-server" class="text-gray-900 font-mono"></dd>
-          </div>
-          <div class="space-y-1">
-            <dt class="text-sm font-medium text-gray-500">Port</dt>
-            <dd id="parse-port" class="text-gray-900 font-mono"></dd>
-          </div>
-          <div class="space-y-1">
-            <dt class="text-sm font-medium text-gray-500">Hex secret</dt>
-            <dd id="parse-hex-secret" class="text-gray-900 font-mono break-all"></dd>
-          </div>
-          <div class="space-y-1">
-            <dt class="text-sm font-medium text-gray-500">Fake-TLS domain</dt>
-            <dd id="parse-domain" class="text-gray-900 font-mono"></dd>
-          </div>
-        </dl>
-      </div>
-    </div>
   </div>
 </body>
 </html>
